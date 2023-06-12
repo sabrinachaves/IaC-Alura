@@ -1,6 +1,6 @@
 resource "aws_security_group" "general_access" {
-  name = "general_access"
-  description = "Devs group"
+  name = var.secutity_group_name
+  description = var.security_group_description
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
@@ -16,6 +16,6 @@ resource "aws_security_group" "general_access" {
     protocol = "-1"
   }
   tags = {
-    Name = "general_access"
+    Name = var.secutity_group_name
   }
 }
