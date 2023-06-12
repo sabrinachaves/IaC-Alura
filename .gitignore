@@ -7,3 +7,8 @@
 *.tfstate.*
 
 *.pem
+
+*.pub
+
+env/Prod/IaC-Prod
+env/Dev/IaC-DEV
