@@ -1,0 +1,29 @@
+- hosts: terraform-ansible
+  tasks:
+  - name: Installing python3 and virtualenv
+    apt: 
+      pkg: 
+      - python3
+      - virtualenv
+      update_cache: yes
+    become: true 
+  - name: Installing dependencies with pip (Django and Django Rest)
+    pip: 
+      virtualenv: /home/ubuntu/tcc/venv
+      name: 
+        - django
+        - djangorestframework
+  - name: Verifying if the project already exists
+    stat: 
+      path: /home/ubuntu/tcc/setup/settings.py
+    register: project
+  - name: Starting project
+    shell: '. /home/ubuntu/tcc/venv/bin/activate; django-admin startproject setup /home/ubuntu/tcc'
+    when: not project.stat.exists
+  - name: Alter hosts settings
+    lineinfile: 
+      path: /home/ubuntu/tcc/setup/settings.py
+      regexp: 'ALLOWED_HOSTS'
+      line: 'ALLOWED_HOSTS = ["*"]'
+      backrefs: yes
+
