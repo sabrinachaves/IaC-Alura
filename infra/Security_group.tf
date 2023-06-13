@@ -15,6 +15,6 @@ resource "aws_security_group" "general_access" {
     protocol = "-1"
   }
   tags = {
-    Name = var.secutity_group_name
+    Name = var.secutity_group
   }
 }

@@ -4,6 +4,9 @@ module "aws-dev" {
   aws_region = "us-east-1"
   key = "IaC-DEV"
   secutity_group = "Dev"
+  minimum = 0
+  maximum = 1
+  groupName = "DevGroup"
 }
 
 output "IP" {

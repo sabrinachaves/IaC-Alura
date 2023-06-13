@@ -4,8 +4,7 @@ module "aws-prod" {
   aws_region = "us-east-1"
   key = "IaC-Prod"
   secutity_group = "Prod"
-}
-
-output "IP" {
-  value = module.aws-prod.public_IP
+  minimum = 1
+  maximum = 10
+  groupName = "ProdGroup"
 }
