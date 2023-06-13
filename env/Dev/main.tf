@@ -3,8 +3,7 @@ module "aws-dev" {
   instance = "t2.micro"
   aws_region = "us-east-1"
   key = "IaC-DEV"
-    secutity_group_name = "general_access_dev"
-  security_group_description = "Devs group"
+  secutity_group = "Dev"
 }
 
 output "IP" {

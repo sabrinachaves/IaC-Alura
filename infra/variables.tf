@@ -7,9 +7,6 @@ variable "key" {
 variable "instance" {
   type = string
 }
-variable "secutity_group_name" {
-  type = string
-}
-variable "security_group_description" {
+variable "secutity_group" {
   type = string
 }

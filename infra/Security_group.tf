@@ -1,6 +1,5 @@
 resource "aws_security_group" "general_access" {
-  name = var.secutity_group_name
-  description = var.security_group_description
+  name = var.secutity_group
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
