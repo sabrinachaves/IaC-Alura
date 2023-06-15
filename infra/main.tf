@@ -21,7 +21,7 @@ resource "aws_launch_template" "machine" {
     Name = "Terraform Ansible Python"
   }
   security_group_names = [var.secutity_group]
-  user_data            = filebase64("ansible.sh")
+  user_data            = var.production ? filebase64("ansible.sh") : ""
 }
 
 resource "aws_key_pair" "chaveSSH" {
@@ -38,7 +38,7 @@ resource "aws_autoscaling_group" "group" {
     id      = aws_launch_template.machine.id
     version = "$Latest"
   }
-  target_group_arns = [aws_lb_target_group.loadBalancerTarget.arn]
+  target_group_arns = var.production ? [aws_lb_target_group.loadBalancerTarget[0].arn] : []
 }
 
 resource "aws_default_subnet" "subnet_1" {
@@ -52,6 +52,7 @@ resource "aws_default_subnet" "subnet_2" {
 resource "aws_lb" "loadBalancer" {
   internal = false
   subnets  = [aws_default_subnet.subnet_1.id, aws_default_subnet.subnet_2.id]
+  count = var.production ? 1 : 0
 }
 
 resource "aws_lb_target_group" "loadBalancerTarget" {
@@ -59,19 +60,21 @@ resource "aws_lb_target_group" "loadBalancerTarget" {
   port     = "8000"
   protocol = "HTTP"
   vpc_id   = aws_default_vpc.default.id
+  count = var.production ? 1 : 0
 }
 
 resource "aws_default_vpc" "default" {
 }
 
 resource "aws_lb_listener" "loadBalancerInput" {
-  load_balancer_arn = aws_lb.loadBalancer.arn
+  load_balancer_arn = aws_lb.loadBalancer[0].arn
   port = "8000"
   protocol = "HTTP"
   default_action {
     type = "forward"
-    target_group_arn = aws_lb_target_group.loadBalancerTarget.arn
+    target_group_arn = aws_lb_target_group.loadBalancerTarget[0].arn
   }
+  count = var.production ? 1 : 0
 }
 
 resource "aws_autoscaling_policy" "prod-scale" {
@@ -84,4 +87,5 @@ resource "aws_autoscaling_policy" "prod-scale" {
     }
     target_value = 50.0
   }
+  count = var.production ? 1 : 0
 }

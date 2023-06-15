@@ -7,4 +7,5 @@ module "aws-prod" {
   minimum = 1
   maximum = 10
   groupName = "ProdGroup"
+  production = true
 }
